@@ -1,6 +1,6 @@
 /**
- * Subagents — spawn background subagents on one of three backends
- * (pi, Claude Code, Codex) unified behind a single Effect service interface.
+ * Subagents — spawn background subagents on one of four backends
+ * (pi, Claude Code, Codex, opencode) unified behind a single Effect service interface.
  *
  * Tools (for the parent LLM):
  * - subagent_spawn: fire-and-forget spawn (prompt, title, agent, working_dir,
@@ -15,9 +15,10 @@
  *
  * Architecture: Effect v4 generators throughout (backends -> manager ->
  * runtime); this file is the async boundary where tool handlers run effects
- * against one shared ManagedRuntime. All three backends are real: pi runs
+ * against one shared ManagedRuntime. All four backends are real: pi runs
  * in-process SDK sessions, claude drives the Claude Agent SDK, codex speaks
- * JSON-RPC to a scoped `codex app-server` process.
+ * JSON-RPC to a scoped `codex app-server` process, and opencode spawns
+ * `opencode run --format json` child processes.
  */
 
 import * as fs from "node:fs";

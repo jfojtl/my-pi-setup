@@ -10,7 +10,7 @@
 import type { ModelRegistry } from "@earendil-works/pi-coding-agent";
 import { Data } from "effect";
 
-export const BACKEND_NAMES = ["pi", "claude", "codex"] as const;
+export const BACKEND_NAMES = ["pi", "claude", "codex", "opencode"] as const;
 export type BackendName = (typeof BACKEND_NAMES)[number];
 
 /** Who initiated the session. User asides stay out of model-facing tooling. */
@@ -20,7 +20,8 @@ export type SubagentOrigin = "model" | "btw";
  * Shared reasoning-effort scale (pi's thinking levels). Each backend maps a
  * value to its nearest native equivalent: pi uses it directly, codex
  * translates to its reasoning-effort slugs, claude translates to thinking
- * budgets. Omitted = backend default (pi inherits the parent level).
+ * budgets, opencode passes it as its model variant. Omitted = backend
+ * default (pi inherits the parent level).
  */
 export const REASONING_EFFORTS = [
   "off",
@@ -55,7 +56,8 @@ export interface SpawnTask {
   /**
    * Generic model hint, interpreted per backend:
    * pi: "provider/model-id" or bare model id; claude: model alias;
-   * codex: model slug. Omitted = backend default / inherit.
+   * codex: model slug; opencode: "provider/model". Omitted = backend
+   * default / inherit.
    */
   readonly model?: string;
   /** Shared effort scale; each backend maps it to its native equivalent. */
